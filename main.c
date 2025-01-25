@@ -1,8 +1,9 @@
-#include "chess.h"  // For core chess definitions (Piece, isValidMove, etc.)
-#include "board.h"  // For board functions (initializeBoard, printBoard)
-#include <ctype.h>  // For tolower()
-#include <stdio.h>  // For input/output
-#include <string.h> // For string functions
+#include "chess.h"     // For core chess definitions (Piece, isValidMove, etc.)
+#include "board.h"     // For board functions (initializeBoard, printBoard)
+#include "checkmate.h" //(isCheckmate,isKingInCheck)
+#include <ctype.h>     // For tolower()
+#include <stdio.h>     // For input/output
+#include <string.h>    // For string functions
 
 void displayMoveHelp()
 {
@@ -69,6 +70,15 @@ int main()
     {
         printBoard(board); // Print the board in each loop iteration
         printf("\nCurrent player: %s\n", currentPlayer == WHITE ? "White" : "Black");
+        if (isCheckmate(board, currentPlayer))
+        {
+            printf("Checkmate! %s wins!\n", (currentPlayer == WHITE) ? "Black" : "White");
+            break; // End the game
+        }
+        if (isKingInCheck(board, currentPlayer))
+        {
+            printf("Check! %s king is in check.\n", (currentPlayer == WHITE) ? "White" : "Black");
+        }
 
         printf("\nEnter command: ");
         fgets(input, sizeof(input), stdin);
@@ -123,6 +133,15 @@ int main()
             if (!isValidMove(board, fromX, fromY, toX, toY))
             {
                 printf("Invalid move! Check the movement rules and try again.\n");
+                continue;
+            }
+            Piece tempBoard[8][8];                        // Create a temporary board
+            memcpy(tempBoard, board, sizeof(Piece) * 64); // Copy the current board
+
+            movePiece(tempBoard, fromX, fromY, toX, toY); // Make the move on the temp board
+            if (isKingInCheck(tempBoard, currentPlayer))
+            {
+                printf("Invalid move! You must get out of check.\n");
                 continue;
             }
 

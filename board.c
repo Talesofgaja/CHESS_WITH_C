@@ -32,14 +32,14 @@ void initializeBoard(Piece board[8][8])
 }
 void printBoard(Piece board[8][8])
 {
-    printf("  a b c d e f g h\n");
+    printf("   a b c d e f g h\n");
     printf(" +-----------------+\n");
     for (int i = 0; i < 8; i++)
     {
         printf("%d| ", 8 - i);
         for (int j = 0; j < 8; j++)
         {
-            char pieceChar = ' ';
+            char *pieceChar = " ";
             if (board[i][j].type == EMPTY)
             { // Check for empty squares FIRST
                 printf(". ");
@@ -48,80 +48,115 @@ void printBoard(Piece board[8][8])
             switch (board[i][j].type)
             {
             case PAWN:
-                pieceChar = (board[i][j].color == WHITE) ? 'P' : 'p';
+                pieceChar = (board[i][j].color == WHITE) ? "♟" : "♙";
                 break;
             case KNIGHT:
-                pieceChar = (board[i][j].color == WHITE) ? 'N' : 'n';
+                pieceChar = (board[i][j].color == WHITE) ? "♞" : "♘";
                 break;
             case BISHOP:
-                pieceChar = (board[i][j].color == WHITE) ? 'B' : 'b';
+                pieceChar = (board[i][j].color == WHITE) ? "♝" : "♗";
                 break;
             case ROOK:
-                pieceChar = (board[i][j].color == WHITE) ? 'R' : 'r';
+                pieceChar = (board[i][j].color == WHITE) ? "♜" : "♖";
                 break;
             case QUEEN:
-                pieceChar = (board[i][j].color == WHITE) ? 'Q' : 'q';
+                pieceChar = (board[i][j].color == WHITE) ? "♛" : "♕";
                 break;
             case KING:
-                pieceChar = (board[i][j].color == WHITE) ? 'K' : 'k';
+                pieceChar = (board[i][j].color == WHITE) ? "♚" : "♔";
                 break;
             }
             if (board[i][j].color == BLACK)
             {
-                printf("\033[1;31m%c\033[0m ", pieceChar);
+                printf("\033[1;31m%s\033[0m ", pieceChar);
             }
             else
             {
-                printf("%c ", pieceChar);
+                printf("%s ", pieceChar);
             }
         }
         printf("|\n");
     }
     printf(" +-----------------+\n");
 }
-/*void printBoard(Piece board[8][8])
+/*#include "board.h"
+
+void initializeBoard(Piece board[8][8])
 {
-    printf("  a b c d e f g h\n");
+    // Initialize empty squares
     for (int i = 0; i < 8; i++)
     {
-        printf("%d ", 8 - i);
         for (int j = 0; j < 8; j++)
         {
-            char piece = ' ';
+            board[i][j].type = EMPTY;
+        }
+    }
+
+    // Set up pawns
+    for (int i = 0; i < 8; i++)
+    {
+        board[1][i].type = PAWN;
+        board[1][i].color = BLACK;
+        board[6][i].type = PAWN;
+        board[6][i].color = WHITE;
+    }
+
+    // Set up other pieces for both colors
+    int backRow[8] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
+    for (int i = 0; i < 8; i++)
+    {
+        board[0][i].type = backRow[i];
+        board[0][i].color = BLACK;
+        board[7][i].type = backRow[i];
+        board[7][i].color = WHITE;
+    }
+}
+void printBoard(Piece board[8][8])
+{
+    printf("    a b c d e f g h\n");
+    printf(" +-----------------+\n");
+    for (int i = 0; i < 8; i++)
+    {
+        printf("%d| ", 8 - i);
+        for (int j = 0; j < 8; j++)
+        {
+            char *pieceChar = " ";
+            if (board[i][j].type == EMPTY)
+            { // Check for empty squares FIRST
+                printf(". ");
+                continue; // VERY IMPORTANT: Skip to the next square
+            }
             switch (board[i][j].type)
             {
             case PAWN:
-                piece = 'P';
+                pieceChar = (board[i][j].color == WHITE) ? "♟" : "♙";
                 break;
             case KNIGHT:
-                piece = 'N';
+                pieceChar = (board[i][j].color == WHITE) ? "♞" : "♘";
                 break;
             case BISHOP:
-                piece = 'B';
+                pieceChar = (board[i][j].color == WHITE) ? "♝" : "♗";
                 break;
             case ROOK:
-                piece = 'R';
+                pieceChar = (board[i][j].color == WHITE) ? "♜" : "♖";
                 break;
             case QUEEN:
-                piece = 'Q';
+                pieceChar = (board[i][j].color == WHITE) ? "♛" : "♕";
                 break;
             case KING:
-                piece = 'K';
+                pieceChar = (board[i][j].color == WHITE) ? "♚" : "♔";
                 break;
             }
-            if (board[i][j].type != EMPTY)
+            if (board[i][j].color == BLACK)
             {
-                if (board[i][j].color == BLACK)
-                    printf("\033[1;31m%c\033[0m ", piece); // Red for black pieces
-                else
-                    printf("%c ", piece); // Normal color for white pieces
+                printf("\033[1;31m%s\033[0m ", pieceChar);
             }
             else
             {
-                printf(". ");
+                printf("%s ", pieceChar);
             }
         }
-        printf("%d\n", 8 - i);
+        printf("|\n");
     }
-    printf("  a b c d e f g h\n");
+    printf(" +-----------------+\n");
 }*/
